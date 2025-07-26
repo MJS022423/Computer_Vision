@@ -13,4 +13,5 @@ from Dataset import SiameseDataset
 
 if __name__ == "__main__":
   parcer = argparse.ArgumentParser()
-  parcer.add_argument('-Epoch', type=int, required=True)
+  parcer.add_argument('-Epoch', type=int, default=10 )
+  parcer.add_argument('-batch-size', type=int, default=16, help="")

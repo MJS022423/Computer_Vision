@@ -1,0 +1,54 @@
+import copy
+import torch
+
+class Earlystopper:
+  def __init__(self, min_delta = 0.0, patience = 1):
+    
+    self.min_delta = min_delta
+    self.patience = patience
+    self.best_validation = None
+    self.best_model_state = None
+    self.counter = 0
+    
+  def earlystop(self, validation_loss, model):
+    
+    if self.best_validation is None:
+      self.best_validation = validation_loss
+      self.best_model_state = copy.deepcopy(model.state_dict())
+      
+    elif validation_loss <= self.best_validation - self.min_delta:
+      
+      self.best_validation = validation_loss
+      self.best_model_state = copy.deepcopy(model.state_dict())
+      self.counter = 0
+    
+    else:
+      self.counter += 1
+      
+      print(f"Earlystop: {self.counter}/{self.patience}")
+      if self.counter >= self.patience:
+        return True
+    
+    return False
+       
+  def restore_best_weight(self, model):
+    if self.best_model_state is not None:
+      model.load_state_dict(self.best_model_state)
+      print("Restored Best Weight")
+      
+def Accuracy(anchor, positive, negative, margin=0.2):
+   
+    d_ap = torch.norm(anchor - positive, p=2, dim=1)
+    d_an = torch.norm(anchor - negative, p=2, dim=1)
+    
+    correct = (d_ap + margin < d_an).float()
+    accuracy = correct.mean().item()
+    
+    return accuracy
+  
+def collate_fn(batch):
+  batch = [item for item in batch if item[0] is not None]
+  if batch is None:
+    return None
+  image, label = zip(*batch)
+  return torch.stack(image), torch.tensor(label)

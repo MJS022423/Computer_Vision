@@ -52,3 +52,43 @@ def collate_fn(batch):
     return None
   image, label = zip(*batch)
   return torch.stack(image), torch.tensor(label)
+
+def semi_hard_batching(embedding, label, margin = 0.3):
+  
+  batch_size = embedding.size(0)
+  dist = torch.cdist(embedding, embedding ,p=2)
+  
+  anchor, positive, negative = [], [], []
+  
+  for i in range(batch_size):
+    
+    mask_positive = (label == label[i])
+    mask_positive[i] = False
+    mask_negative = (label != label[i])
+    
+    if not mask_positive.any() or not mask_negative.any():
+      continue
+    
+    pos_id = torch.where(mask_positive)[0]
+    neg_id = torch.where(mask_negative)[0]
+    
+    d_positive = dist[i, pos_id]
+    d_negative = dist[i, neg_id]
+    
+    mask = (d_negative.unsqueeze(1) > d_positive.unsqueeze(0)) & (d_negative.unsqueeze(1) < d_positive.unsqueeze(0) + margin)
+    
+    neg_i, pos_i = torch.nonzero(mask, as_tuple=True)
+    for ni, pi in zip(neg_i.tolist(), pos_i.tolist()):
+        anchor.append(i)
+        positive.append(pos_id[pi].item())
+        negative.append(neg_id[ni].item())
+
+  if not anchor:
+      empty = torch.empty(0, dtype=torch.long)
+      return empty, empty, empty
+
+  return (
+      torch.tensor(anchor, dtype=torch.long),
+      torch.tensor(positive, dtype=torch.long),
+      torch.tensor(negative, dtype=torch.long),
+  )

@@ -9,7 +9,7 @@ class Earlystopper:
     self.best_validation = None
     self.best_model_state = None
     self.counter = 0
-    
+
   def earlystop(self, validation_loss, model):
     
     if self.best_validation is None:

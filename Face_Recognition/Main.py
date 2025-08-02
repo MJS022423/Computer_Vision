@@ -16,7 +16,7 @@ sys.path.append(os.path.join(Path(__file__).parent, "Dataset.py"))
 sys.path.append(os.path.join(Path(__file__).parent, "Model.py"))
 sys.path.append(os.path.join(Path(__file__).parent, "train.py"))
 
-from utils import Earlystopper, Accuracy, collate, semi_hard_batching
+from utils import Earlystopper, Accuracy, collate_fn, semi_hard_batching
 from Dataset import SiameseDataset
 from Model import Siamese_network
 from train import train_step, valid_step
@@ -45,7 +45,7 @@ def dataset(dataset_dir):
   return (train_data, test_data)
 
 def dataLoader(dataset):
-  return DataLoader(dataset, batch_size = 64, shuffle=True, collate=collate)
+  return DataLoader(dataset, batch_size = 64, shuffle=True, collate_fn=collate_fn)
 
 if __name__ == "__main__":
   

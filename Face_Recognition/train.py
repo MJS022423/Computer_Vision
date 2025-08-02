@@ -8,9 +8,12 @@ def train_step(Epoch, Accuracy, Mining, Model: torch.nn.Module,
                DataLoader: DataLoader, 
                Criterion: torch.nn.Module, 
                Optimizer: torch.optim.Optimizer,
-               Device: torch.Device):
+               Device: torch.device):
   
   Model.train()
+  
+  running_loss = 0
+  running_acc = 0  
   
   for x_train in tqdm(DataLoader, total= len(DataLoader), desc = f"Epoch: {Epoch[0] + 1} / {Epoch[1]} - Training:", leave = False):
     
@@ -46,9 +49,13 @@ def train_step(Epoch, Accuracy, Mining, Model: torch.nn.Module,
 def valid_step(Epoch, Accuracy, Mining, Model: torch.nn.Module, 
                     DataLoader: DataLoader, 
                     Criterion: torch.nn.Module, 
-                    Device: torch.Device):
+                    Device: torch.device):
   Model.eval()
   with torch.inference_mode():
+    
+    running_loss = 0
+    running_acc = 0
+    
     for x_test in tqdm(DataLoader, total= len(DataLoader), desc = f"Epoch: {Epoch[0] + 1} / {Epoch[1]} - Training:", leave = False):
       
       img, label = [data.to(Device) for data in x_test]

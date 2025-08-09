@@ -52,6 +52,7 @@ if __name__ == "__main__":
   args = parse_args()
   
   Epochs = args.epoch
+  torch.manual_seed(42)
   data = dataset(image_dir)
   device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
   model = Siamese_network().to(device)

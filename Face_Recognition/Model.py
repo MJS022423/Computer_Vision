@@ -17,7 +17,10 @@ class Siamese_network(nn.Module):
     
     self.fc = nn.Sequential(
       nn.Dropout(0.2, inplace= True),
-      nn.Linear(512, 128)
+      nn.Linear(512,256),
+      nn.ReLU(inplace=True),
+      nn.BatchNorm1d(256),
+      nn.Linear(256, 128)
     )
     
   def forward(self, x1, x2):

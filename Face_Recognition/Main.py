@@ -10,18 +10,14 @@ from torch.optim import Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import random_split
 from time import time
-
-sys.path.append(os.path.join(Path(__file__).parent, "utils.py"))
-sys.path.append(os.path.join(Path(__file__).parent, "Dataset.py"))
-sys.path.append(os.path.join(Path(__file__).parent, "Model.py"))
-sys.path.append(os.path.join(Path(__file__).parent, "train.py"))
+from pathlib import Path
 
 from utils import Earlystopper, Accuracy, collate_fn, semi_hard_batching
 from Dataset import SiameseDataset
 from Model import Siamese_network
 from train import train_step, valid_step
 
-image_dir = "C:/Users/Porsha Silaroy/Documents/Marvert/image/DataSet/105_classes_pins_dataset" 
+image_dir = Path(f"{os.getcwd}").resolve().parent.parent.parent.parent.parent / 'image' / 'DataSet'/ '105_classes_pins_dataset'
 
 def parse_args():
   parcer = argparse.ArgumentParser()

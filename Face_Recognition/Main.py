@@ -27,7 +27,7 @@ def parse_args():
   parcer = argparse.ArgumentParser()
   parcer.add_argument("--epoch", type=int, default=10,help="number of epoch default - [10]")
   parcer.add_argument("--margin", type=float, default=1.0,help="TripletLoss margin default - [1.0]")
-  parcer.add_argument("--lr", type=float, default=1.0,help="Learning rate default - [0.0001]")
+  parcer.add_argument("--lr", type=float, default=0.0001,help="Learning rate default - [0.0001]")
   args = parcer.parse_args()
   
   return args
@@ -45,7 +45,7 @@ def dataset(dataset_dir):
   return (train_data, test_data)
 
 def dataLoader(dataset):
-  return DataLoader(dataset, batch_size = 64, shuffle=True, collate_fn=collate_fn)
+  return DataLoader(dataset, batch_size = 32, shuffle=True, collate_fn=collate_fn)
 
 if __name__ == "__main__":
   
@@ -85,8 +85,8 @@ if __name__ == "__main__":
     current_lr = optimizer.param_groups[0]['lr']
     stop_time = time()
     
-    print(f"Epoch {epoch+1}/{Epochs},Train Accuracy: {Train_metrics[0]:.4f} Test Loss: {Train_metrics[1]:.4f}")
-    print(f"Epoch {epoch+1}/{Epochs},Test Accuracy: {Test_metrics[0]:.4f} Test Loss: {Test_metrics[1]:.4f}")
+    print(f"Epoch {epoch+1}/{Epochs},Train Accuracy: {Train_metrics[0]:.2f}% Test Loss: {Train_metrics[1]:.2f}%")
+    print(f"Epoch {epoch+1}/{Epochs},Test Accuracy: {Test_metrics[0]:.2f}% Test Loss: {Test_metrics[1]:.2f}%")
     print(f"Learning Rate: {current_lr:.6f}, Time: {stop_time}")
       
 

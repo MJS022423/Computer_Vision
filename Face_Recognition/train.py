@@ -56,7 +56,7 @@ def valid_step(Epoch, Accuracy, Mining, Model: torch.nn.Module,
     running_loss = 0
     running_acc = 0
     
-    for x_test in tqdm(DataLoader, total= len(DataLoader), desc = f"Epoch: {Epoch[0] + 1} / {Epoch[1]} - Training:", leave = False):
+    for x_test in tqdm(DataLoader, total= len(DataLoader), desc = f"Epoch: {Epoch[0] + 1} / {Epoch[1]} - Testing:", leave = False):
       
       img, label = [data.to(Device) for data in x_test]
       

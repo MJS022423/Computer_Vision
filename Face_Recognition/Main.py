@@ -83,7 +83,7 @@ if __name__ == "__main__":
     
     print(f"Epoch {epoch+1}/{Epochs},Train Accuracy: {Train_metrics[0]:.2f}% Test Loss: {Train_metrics[1]:.2f}%")
     print(f"Epoch {epoch+1}/{Epochs},Test Accuracy: {Test_metrics[0]:.2f}% Test Loss: {Test_metrics[1]:.2f}%")
-    print(f"Learning Rate: {current_lr:.6f}, Time: {stop_time}")
+    print(f"Learning Rate: {current_lr:.6f}, Time: {stop_time:.2f}")
       
 
 
